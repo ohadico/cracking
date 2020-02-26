@@ -9,4 +9,9 @@ def is_anagrams(str1, str2):
     for c1, c2 in zip(str1, str2):
         counter[c1] += 1
         counter[c2] -= 1
-    return not any(counter)
+    return not any(counter.values())
+
+
+def test_anagrams():
+    assert is_anagrams("abc", "bcd") is False
+    assert is_anagrams("abbaba", "aaabbb") is True
