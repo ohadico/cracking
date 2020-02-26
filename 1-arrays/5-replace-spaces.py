@@ -1,15 +1,39 @@
+import pytest
+
+
+def write_or_append(string, index, c, length):
+    if index < length:
+        string[index] = c
+    else:
+        string.append(c)
+
+
 def replace_spaces(string):
     buffer = []
-    read = write = 0
+    i = write = 0
     l = len(string)
-    while i < l:
+    if i < l:
         buffer.append(string[i]); i += 1
+    while buffer:
+        if i < l:
+            buffer.append(string[i]); i += 1
         c = buffer.pop(0)
         if c != ' ':
-            string[write] = c if write < l else string.append(c); write += 1
+            write_or_append(string, write, c, l); write += 1
             continue
-        buffer.append(string[i]); i += 1
-        buffer.append(string[i]); i += 1
-        string[write] = '%' if write < l else string.append('%'); write += 1
-        string[write] = '2' if write < l else string.append('2'); write += 1
-        string[write] = '0' if write < l else string.append('0'); write += 1
+        if i < l:
+            buffer.append(string[i]); i += 1
+        if i < l:
+            buffer.append(string[i]); i += 1
+        write_or_append(string, write, '%', l); write += 1
+        write_or_append(string, write, '2', l); write += 1
+        write_or_append(string, write, '0', l); write += 1
+
+    return string
+
+
+@pytest.mark.parametrize(("string",), [("",),
+                                       ("a b",),
+                                       (" Hello , World ! ",)])
+def test_replace_spaces(string: str):
+    assert ''.join(replace_spaces(list(string))) == string.replace(' ', "%20")
