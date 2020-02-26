@@ -1,3 +1,6 @@
+import pytest
+
+
 def remove_dups(string):
     dups = [False] * 256
     write = 0
@@ -6,10 +9,13 @@ def remove_dups(string):
             continue
         string[write] = c
         write += 1
+        dups[ord(c)] = True
     return string[:write]
 
 
-def test_remove_dups():
-    assert remove_dups(list("")) == ""
-    assert remove_dups(list("aaaabbbcc")) == "abc"
-    assert remove_dups(list("Hello, World!")) == "Helo, World!"
+@pytest.mark.parametrize(("before", "after"),
+                         [("", ""),
+                          ("aaaabbbcc", "abc"),
+                          ("Hello, World!", "Helo, Wrd!")])
+def test_remove_dups(before, after):
+    assert remove_dups(list(before)) == list(after)
