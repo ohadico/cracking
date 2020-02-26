@@ -8,28 +8,12 @@ def write_or_append(string, index, c, length):
         string.append(c)
 
 
+# space: O(n), time: O(n)
 def replace_spaces(string):
-    buffer = []
-    i = write = 0
-    l = len(string)
-    if i < l:
-        buffer.append(string[i]); i += 1
-    while buffer:
-        if i < l:
-            buffer.append(string[i]); i += 1
-        c = buffer.pop(0)
-        if c != ' ':
-            write_or_append(string, write, c, l); write += 1
-            continue
-        if i < l:
-            buffer.append(string[i]); i += 1
-        if i < l:
-            buffer.append(string[i]); i += 1
-        write_or_append(string, write, '%', l); write += 1
-        write_or_append(string, write, '2', l); write += 1
-        write_or_append(string, write, '0', l); write += 1
-
-    return string
+    replaced = ""
+    for c in string:
+        replaced += c if c != ' ' else "%20"
+    return replaced
 
 
 @pytest.mark.parametrize(("string",), [("",),
