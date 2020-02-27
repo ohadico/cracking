@@ -12,22 +12,27 @@ class StackOnArr(object):
         self._step = step
         self.bounds = bounds
 
+    @property
     def top(self):
         return self._tops[self._top_index]
 
+    @top.setter
+    def top(self, value):
+        self._tops[self._top_index] = value
+
     def push(self, v):
-        if self._step > 0 and self.top() > min(self._tops[i] for i in self.bounds) or \
-           self._step < 0 and self.top() < max(self._tops[i] for i in self.bounds):
+        if self._step > 0 and self.top > min(self._tops[i] for i in self.bounds) or \
+           self._step < 0 and self.top < max(self._tops[i] for i in self.bounds):
             raise MemoryError()
-        self._arr[self.top()] = v
-        self._tops[self._top_index] += self._step
+        self._arr[self.top] = v
+        self.top += self._step
 
     def pop(self):
-        self._tops[self._top_index] -= self._step
-        if self.top() < 0 or self.top() >= len(self._arr):
+        self.top -= self._step
+        if self.top < 0 or self.top >= len(self._arr):
             raise IndexError()
-        v = self._arr[self.top()]
-        # self._arr[self.top()] = None
+        v = self._arr[self.top]
+        # self._arr[self.top] = None
         return v
 
 
